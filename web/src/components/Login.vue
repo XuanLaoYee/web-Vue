@@ -44,7 +44,7 @@
                     return callback(new Error("请输入密码"));
                 }
                 const passwordRule = /^[a-zA-Z0-9_]{1,16}$/;
-                if (userNameRule.test(value)) {
+                if (passwordRule.test(value)) {
                     this.$refs.ruleForm.validateField("checkPass");
                     return callback();
                 } else {
@@ -63,20 +63,51 @@
                 }
             };
         },
-        computed:{
+        computed: {
             isLogin: {
                 get() {
                     return this.$store.getters.getShowLogin;///TODO查看getShowLogin的作用
                 },
-                set(val){
-                    this.$refs["ruleForm"].resetField();
+                set(val) {
+                    this.$refs["ruleForm"].resetFields();//清空输入框校验状态
                     this.setShowLogin(val);
                 }
             }
+        },
+        methods: {
+            ...mapActions(["setUser", "setShowLogin"]),
+            Login() {
+                this.$refs["ruleForm"].validate(valid => {
+                    if (valid) {
+                        this.$axios
+                            .post("api/users/login", {
+                                userName: this.LoginUser.name,
+                                password: this.LoginUser.pass
+                            })
+                            .then(res => {
+                                if (res.data.code === "001") {///"001"表示登陆成功
+                                    this.isLogin = false;
+                                    let user = JSON.stringify(res.data.user);
+                                    localStorage.setItem("user", user);//放到浏览器缓存中
+                                    this.setUser(res.data.user);//信息写至vuex.store
+                                    this.notifySucceed(res.data.msg);//弹框
+                                } else {
+                                    this.$refs["ruleForm"].resetFields();
+                                    this.notifyError(res.data.msg);
+                                }
+                            })
+                            .catch(err => {
+                                return Promise.reject(err);
+                            });
+                    } else {
+                        return false;
+                    }
+                });
+            }
         }
-    }
+    };
 </script>
 
-<style scoped>
+<style>
 
 </style>

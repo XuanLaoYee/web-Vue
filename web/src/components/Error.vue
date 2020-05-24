@@ -10,6 +10,7 @@
         width: 1225px;
         margin: 0 auto;
     }
+
     .error .main {
         margin: 0 362.5px;
         height: 500px;
