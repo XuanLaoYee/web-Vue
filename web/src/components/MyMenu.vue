@@ -4,7 +4,7 @@
             <li
                     v-for="item in val"
                     :key="item"
-                    :class="activeClass == item ? 'active':''"
+                    :class="activeClass === item ? 'active':''"
                     @mouseover="mouseover($event,item)"
             >
                 <router-link to>
