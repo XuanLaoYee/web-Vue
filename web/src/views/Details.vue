@@ -44,7 +44,9 @@
             <div class="content">
                 <h1 class="name">{{productDetails.product_name}}</h1>
                 <p class="intro">{{productDetails.product_intro}}</p>
-                <p class="store">小米自营</p>
+                <router-link to="/myStore">
+                    <p class="store">小米自营</p>
+                </router-link>
                 <div class="price">
                     <span>{{productDetails.product_selling_price}}元</span>
                     <span
