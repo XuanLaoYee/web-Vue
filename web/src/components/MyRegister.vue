@@ -31,6 +31,8 @@
                             v-model="RegisterUser.confirmPass"
                     ></el-input>
                 </el-form-item>
+                <el-radio v-model="user_kind" label="buyer">我是买家</el-radio>
+                <el-radio v-model="user_kind" label="seller">我是卖家</el-radio>
                 <el-form-item>
                     <el-button size="medium" type="primary" @click="Register" style="width:100%;">注册</el-button>
                 </el-form-item>
@@ -54,7 +56,8 @@
                     //判断数据库中是否已经存在该用户名
                     this.$axios
                         .post("/api/users/findUserName", {
-                            userName: this.RegisterUser.name
+                            userName: this.RegisterUser.name,
+                            user_kind: this.user_kind
                         })
                         .then(res => {// “001”代表用户名不存在，可以注册
                             if (res.data.code === "001") {
@@ -112,7 +115,8 @@
                     name: [{validator: validateName, trigger: "blur"}],
                     pass: [{validator: validatePass, trigger: "blur"}],
                     confirmPass: [{validator: validateConfirmPass, trigger: "blur"}]
-                }
+                },
+                user_kind:'buyer'
             };
         },
         watch: {

@@ -65,8 +65,10 @@
                 </div>
                 <!-- 内容区底部按钮 -->
                 <div class="button">
-                    <el-button class="shop-cart" :disabled="dis" @click="addShoppingCart">加入购物车</el-button>
-                    <el-button class="like" @click="addCollect">喜欢</el-button>
+                    <el-button class="shop-cart" :disabled="dis" @click="addShoppingCart" v-if="!isSeller()">加入购物车</el-button>
+                    <el-button class="like" @click="addCollect" v-if="!isSeller()">喜欢</el-button>
+                    <el-button class="shop-cart" :disabled="true" v-if="isSeller()">加入购物车</el-button>
+                    <el-button class="like" :disabled="true" v-if="isSeller()">喜欢</el-button>
                 </div>
                 <!-- 内容区底部按钮END -->
                 <div class="pro-policy">
@@ -130,6 +132,13 @@
                     .catch(err => {
                         return Promise.reject(err);
                     });
+            },
+            isSeller() {
+                let user_kind_temp = localStorage.getItem("user_kind");
+                if (user_kind_temp === 'seller') {
+                    return true
+                }
+                return false
             },
             // 获取商品图片
             getDetailsPicture(val) {

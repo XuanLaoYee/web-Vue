@@ -61,6 +61,14 @@ const routes = [
         meta: {
             requireAuth: true // 需要验证登录状态
         }
+    },
+    {
+        path: '/myStore',
+        name: 'MyStore',
+        component: ()=> import('../views/MyStore.vue'),
+        meta: {
+            requireAuth: true // 需要验证登录状态
+        }
     }
 ];
 
