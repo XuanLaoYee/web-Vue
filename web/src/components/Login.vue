@@ -1,3 +1,4 @@
+<!--登陆组件 -->
 <template>
     <div id="login">
         <el-dialog title="登陆" width="300px" center :visible.sync="isLogin">
@@ -13,6 +14,8 @@
                             v-model="LoginUser.pass"
                     ></el-input>
                 </el-form-item>
+                <el-radio v-model="user_kind" label="buyer">我是买家</el-radio>
+                <el-radio v-model="user_kind" label="seller">我是卖家</el-radio>
                 <el-form-item>
                     <el-button size="medium" type="primary" @click="Login" style="width:100%;">登陆</el-button>
                 </el-form-item>
@@ -60,7 +63,8 @@
                 rules: {
                     name: [{validator: verifyName, trigger: "blur"}],
                     pass: [{validator: verifyPass, trigger: "blur"}]
-                }
+                },
+                user_kind:'buyer'
             };
         },
         computed: {
@@ -75,19 +79,28 @@
             }
         },
         methods: {
-            ...mapActions(["setUser", "setShowLogin"]),
+            ...mapActions(["setUser", "setShowLogin","setUserKind"]),
             Login() {
                 this.$refs["ruleForm"].validate(valid => {
                     if (valid) {
                         this.$axios
                             .post("api/users/login", {
                                 userName: this.LoginUser.name,
-                                password: this.LoginUser.pass
+                                password: this.LoginUser.pass,
+                                user_kind: this.user_kind
                             })
                             .then(res => {
                                 if (res.data.code === "001") {///"001"表示登陆成功
                                     this.isLogin = false;
                                     let user = JSON.stringify(res.data.user);
+                                    let user_kind = JSON.stringify(res.data.user.user_kind);
+                                    if(user_kind==='"buyer"'){
+                                        localStorage.setItem("user_kind",'buyer');
+                                        this.setUserKind('buyer');
+                                    }else{
+                                        localStorage.setItem("user_kind",'seller');
+                                        this.setUserKind('seller');
+                                    }
                                     localStorage.setItem("user", user);//放到浏览器缓存中
                                     this.setUser(res.data.user);//信息写至vuex.store
                                     this.notifySucceed(res.data.msg);//弹框

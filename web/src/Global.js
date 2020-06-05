@@ -1,5 +1,6 @@
 exports.install = function (Vue) {
-    Vue.prototype.$target = "";//后端服务器
+
+    Vue.prototype.$target = "http://localhost:3000/";
     Vue.prototype.notifySucceed = function (msg) {//成功时的弹出框
         this.$notify({
             title: "成功",

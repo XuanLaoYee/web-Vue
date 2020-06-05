@@ -22,17 +22,21 @@
                                 </el-button>
                             </el-popover>
                         </li>
+
                         <li>
                             <router-link to="/order">我的订单</router-link>
                         </li>
                         <li>
-                            <router-link to="/collect">我的收藏</router-link>
+                            <router-link to="/collect" v-if="isBuyer()">我的收藏</router-link>
                         </li>
-                        <li :class="getNum > 0 ? 'shopCart-full':'shopCart'">
+                        <li :class="getNum > 0 ? 'shopCart-full':'shopCart'" v-if="isBuyer()">
                             <router-link to="/shoppingCart">
                                 <i class="el-icon-shopping-cart-full"></i>购物车
                                 <span class="num">({{getNum}})</span>
                             </router-link>
+                        </li>
+                        <li>
+                            <router-link to="/myStore" v-if="isSeller()">我的店铺</router-link>
                         </li>
                     </ul>
                 </div>
@@ -84,9 +88,9 @@
                     <div class="ng-promise-box">
                         <div class="ng-promise">
                             <p class="text">
-                                <a class="icon1" href="javascript:;">7天无理由退换货</a>
-                                <a class="icon2" href="javascript:;">满99元全场免邮</a>
-                                <a class="icon3" style="margin-right: 0" href="javascript:;">100%品质保证</a>
+                                <a class="icon1" href="javascript:;">1天无理由退货</a>
+                                <a class="icon2" href="javascript:;">全场包邮</a>
+                                <a class="icon3" style="margin-right: 0" href="javascript:;">100‰品质保证</a>
                             </p>
                         </div>
                     </div>
@@ -166,15 +170,30 @@
             logout() {
                 this.visible = false;
                 localStorage.setItem("user", "");
+                localStorage.setItem("user_kind","");
                 this.setUser("");
                 this.notifySucceed("退出登陆");
             },
             isRegister(val) {
                 this.register = val;
             },
+            isBuyer:function () {
+                let user_kind_temp = localStorage.getItem("user_kind");
+                if(user_kind_temp ==='buyer'){
+                    return true
+                }
+                return false
+            },
+            isSeller(){
+                let user_kind_temp = localStorage.getItem("user_kind");
+                if(user_kind_temp ==='seller'){
+                    return true
+                }
+                return false
+            },
             searchClick() {
-                if (this.search !== "") {//跳转到全部商品页面，并传递搜索条件
-                    this.$route.push({path: "/goods", query: {search: this.search}});
+                if (this.search != "") {//跳转到全部商品页面，并传递搜索条件
+                    this.$router.push({path: "/goods", query: {search: this.search}});
                     this.search = "";
                 }
             }

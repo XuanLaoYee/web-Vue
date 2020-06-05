@@ -26,6 +26,7 @@
                         <div class="pro-price">单价</div>
                         <div class="pro-num">数量</div>
                         <div class="pro-total">小计</div>
+                        <div class="pro-statue">订单状态</div>
                     </li>
                     <!-- 我的订单表头END -->
 
@@ -45,6 +46,7 @@
                         <div class="pro-price">{{product.product_price}}元</div>
                         <div class="pro-num">{{product.product_num}}</div>
                         <div class="pro-total pro-total-in">{{product.product_price*product.product_num}}元</div>
+                        <div class="pro-statue">{{showOrderStatue(product.isSure)}}</div><!--TODO-->
                     </li>
                 </ul>
                 <div class="order-bar">
@@ -89,7 +91,8 @@
             // 获取订单数据
             this.$axios
                 .post("/api/user/order/getOrder", {
-                    user_id: this.$store.getters.getUser.user_id
+                    user_id: this.$store.getters.getUser.user_id,
+                    user_kind: localStorage.getItem('user_kind')
                 })
                 .then(res => {
                     if (res.data.code === "001") {
@@ -119,6 +122,14 @@
                     total.push({totalNum, totalPrice});
                 }
                 this.total = total;
+            }
+        },
+        methods: {
+            showOrderStatue(val){
+                if(val === 1){
+                    return '已确认'
+                }
+                return '尚未确认'
             }
         }
     };
@@ -201,9 +212,13 @@
         width: 80px;
     }
 
+    .order .content ul .pro-statue{
+        float: right;
+        width: 70px;
+    }
     .order .content ul .pro-name {
         float: left;
-        width: 380px;
+        width: 350px;
     }
 
     .order .content ul .pro-name a {
@@ -229,7 +244,7 @@
 
     .order .content ul .pro-total {
         float: left;
-        width: 160px;
+        width: 130px;
         padding-right: 81px;
         text-align: right;
     }
