@@ -69,6 +69,14 @@ const routes = [
         meta: {
             requireAuth: true // 需要验证登录状态
         }
+    },
+    {
+        path: '/uploadItem',
+        name: 'uploadItem',
+        component: ()=> import('../views/uploadItem.vue'),
+        meta: {
+            requireAuth: true // 需要验证登录状态
+        }
     }
 ];
 

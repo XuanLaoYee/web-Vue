@@ -42,15 +42,89 @@
 
             <!-- 右侧内容区 -->
             <div class="content">
-                <h1 class="name">{{productDetails.product_name}}</h1>
-                <p class="intro">{{productDetails.product_intro}}</p>
-                <p class="store">小米自营</p>
+                <h1 class="name">{{productDetails.product_name}}
+
+                    <el-popover placement="top" width="180" v-model="EditTitleVisible">
+                        <el-input
+                                placeholder="请输入物品名"
+                                v-model="InputTitle"
+                                clearable>
+                        </el-input>
+                        <div style="text-align: right; margin: 20px 0 0">
+                            <el-button size="mini" type="text" @click="EditTitleVisible = false">取消</el-button>
+                            <el-button type="primary" size="mini" @click="changeTitle">确定</el-button>
+                        </div>
+                        <el-button
+                                icon="el-icon-edit"
+                                slot="reference"
+                                size="mini" circle
+                                v-if="seller_id===getUser_id()&isSeller()"
+                                @click="showEditTitle"
+                        ></el-button>
+                    </el-popover>
+                </h1>
+
+                <p class="intro">{{productDetails.product_intro}}
+                    <el-popover placement="top" width="180" v-model="EditIntroVisible">
+                        <el-input
+                                placeholder="请输入介绍"
+                                v-model="InputIntro"
+                                clearable>
+                        </el-input>
+                        <div style="text-align: right; margin: 20px 0 0">
+                            <el-button size="mini" type="text" @click="EditIntroVisible = false">取消</el-button>
+                            <el-button type="primary" size="mini" @click="changeIntro">确定</el-button>
+                        </div>
+                        <el-button
+                                icon="el-icon-edit"
+                                slot="reference"
+                                size="mini" circle
+                                v-if="seller_id===getUser_id()&isSeller()"
+                                @click="showEditIntro"
+                        ></el-button>
+                    </el-popover>
+                </p>
+
+                <el-link :underline="false" class="store" @click="sellerDetail">{{sellerName}}</el-link>
                 <div class="price">
                     <span>{{productDetails.product_selling_price}}元</span>
-                    <span
-                            v-show="productDetails.product_price !== productDetails.product_selling_price"
-                            class="del"
-                    >{{productDetails.product_price}}元</span>
+                    <span><el-popover placement="top" width="180" v-model="EditSellPriceVisible">
+                        <el-input
+                                placeholder="请输入实际价格"
+                                v-model="InputSellPrice"
+                                clearable>
+                        </el-input>
+                        <div style="text-align: right; margin: 20px 0 0">
+                            <el-button size="mini" type="text" @click="EditSellPriceVisible = false">取消</el-button>
+                            <el-button type="primary" size="mini" @click="changeSellPrice">确定</el-button>
+                        </div>
+                        <el-button
+                                icon="el-icon-edit"
+                                slot="reference"
+                                size="mini" circle
+                                v-if="seller_id===getUser_id()&isSeller()"
+                                @click="showEditSellPrice"
+                        ></el-button>
+                    </el-popover></span>
+                    <span class="del">{{productDetails.product_price}}元</span>
+                    <span><el-popover placement="top" width="180" v-model="EditPriceVisible">
+                        <el-input
+                                placeholder="请输入原价"
+                                v-model="InputPrice"
+                                clearable>
+                        </el-input>
+                        <div style="text-align: right; margin: 20px 0 0">
+                            <el-button size="mini" type="text" @click="EditPriceVisible = false">取消</el-button>
+                            <el-button type="primary" size="mini" @click="changePrice">确定</el-button>
+                        </div>
+                        <el-button
+                                icon="el-icon-edit"
+                                slot="reference"
+                                size="mini" circle
+                                v-if="seller_id===getUser_id()&isSeller()"
+                                @click="showEditPrice"
+                        ></el-button>
+                    </el-popover></span>
                 </div>
                 <div class="pro-list">
                     <span class="pro-name">{{productDetails.product_name}}</span>
@@ -102,7 +176,19 @@
                 dis: false, // 控制“加入购物车按钮是否可用”
                 productID: "", // 商品id
                 productDetails: "", // 商品详细信息
-                productPicture: "" // 商品图片
+                productPicture: "", // 商品图片
+                seller_id:-1,
+                sellerName:"",
+                EditTitleVisible:false,
+                EditIntroVisible:false,
+                EditPriceVisible:false,
+                EditSellPriceVisible:false,
+
+                InputTitle:"",
+                InputIntro:"",
+                InputPrice:"",
+                InputSellPrice:""
+
             };
         },
         // 通过路由获取商品id
@@ -128,17 +214,28 @@
                     })
                     .then(res => {
                         this.productDetails = res.data.Product[0];
+                        this.seller_id = res.data.Product[0].seller_id;
+                        this.sellerName = res.data.sellerName;
                     })
                     .catch(err => {
                         return Promise.reject(err);
                     });
             },
+            //判断是不是卖家
             isSeller() {
                 let user_kind_temp = localStorage.getItem("user_kind");
                 if (user_kind_temp === 'seller') {
                     return true
                 }
                 return false
+            },
+            //获取用户id
+            getUser_id(){
+                return this.$store.getters.getUser.user_id;
+            },
+            //通过卖家id获得商品
+            sellerDetail(){
+                this.$router.push({path: "/myStore", query: {seller_id: this.seller_id}});
             },
             // 获取商品图片
             getDetailsPicture(val) {
@@ -189,6 +286,90 @@
                     .catch(err => {
                         return Promise.reject(err);
                     });
+            },
+            showEditTitle(){
+                this.EditTitleVisible = !this.EditTitleVisible
+            },
+            showEditIntro(){
+                this.EditIntroVisible = !this.EditIntroVisible
+            },
+            showEditPrice(){
+                this.EditPriceVisible = !this.EditPriceVisible
+            },
+            showEditSellPrice(){
+                this.EditSellPriceVisible = !this.EditSellPriceVisible
+            },
+            changeTitle(){
+                this.$axios
+                    .post("/api/product/changeProductTitle",{
+                        productID: this.productID,
+                        title: this.InputTitle
+                    })
+                    .then(res=>{
+                        if(res.data.code==='001'){
+                            this.notifySucceed(res.data.msg);
+                            this.productDetails.product_name = this.InputTitle;
+                        }else{
+                            this.notifyError(res.data.msg);
+                        }
+                    })
+                    .catch(err=>{
+                        return Promise.reject(err);
+                    })
+            },
+            changeIntro(){
+                this.$axios
+                    .post("/api/product/changeProductIntro",{
+                        productID:this.productID,
+                        intro:this.InputIntro
+                    })
+                    .then(res=>{
+                        if(res.data.code==='001'){
+                            this.notifySucceed(res.data.msg);
+                            this.productDetails.product_intro = this.InputIntro;
+                        }else{
+                            this.notifyError(res.data.msg);
+                        }
+                    })
+                    .catch(err=>{
+                        return Promise.reject(err);
+                    })
+            },
+            changePrice(){
+                this.$axios
+                    .post("/api/product/changePrice",{
+                        productID:this.productID,
+                        price:this.InputPrice
+                    })
+                    .then(res=>{
+                        if(res.data.code==='001'){
+                            this.notifySucceed(res.data.msg);
+                            this.productDetails.product_price = this.InputPrice;
+                        }else{
+                            this.notifyError(res.data.msg);
+                        }
+                    })
+                    .catch(err=>{
+                        return Promise.reject(err);
+                    })
+            },
+            changeSellPrice(){
+                this.$axios
+                    .post("/api/product/changeSellPrice",{
+                        productID:this.productID,
+                        sellPrice:this.InputSellPrice
+                    })
+                    .then(res=>{
+                        if(res.data.code==='001'){
+                            this.notifySucceed(res.data.msg);
+                            this.productDetails.product_selling_price = this.InputSellPrice
+                        }else{
+                            this.notifyError(res.data.msg);
+                        }
+                    })
+                    .catch(err=>{
+                        return Promise.reject(err);
+                    })
             },
             addCollect() {
                 // 判断是否登录,没有登录则显示登录组件
