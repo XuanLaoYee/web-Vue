@@ -27,6 +27,7 @@
                         <div class="pro-num">数量</div>
                         <div class="pro-total">小计</div>
                         <div class="pro-statue">订单状态</div>
+                        <div class="pro-op" v-if="isSeller()">确认订单</div>
                     </li>
                     <!-- 我的订单表头END -->
 
@@ -47,6 +48,10 @@
                         <div class="pro-num">{{product.product_num}}</div>
                         <div class="pro-total pro-total-in">{{product.product_price*product.product_num}}元</div>
                         <div class="pro-statue">{{showOrderStatue(product.isSure)}}</div><!--TODO-->
+                        <div class="pro-op" v-if="isSeller()">
+                            <el-button v-if="product.isSure" disabled="true" size="small">已确认</el-button>
+                            <el-button v-if="!product.isSure"  size="small" @click="Sure(product.order_id)">确认</el-button>
+                        </div>
                     </li>
                 </ul>
                 <div class="order-bar">
@@ -130,9 +135,31 @@
                     return '已确认'
                 }
                 return '尚未确认'
+            },
+            isSeller() {
+                let user_kind_temp = localStorage.getItem("user_kind");
+                if (user_kind_temp === 'seller') {
+                    return true
+                }
+                return false
+            },
+            Sure(val){
+                this.$axios
+                    .post("/api/user/order/sureOrder",{
+                        order_id:val
+                    })
+                    .then(res =>{
+                        if(res.data.code === '001'){
+                            this.notifySucceed(res.data.msg);
+                            this.$router.go(0);
+                        }else if(res.data.code === '002'){
+                            this.notifyError(res.data.msg);
+                        }
+                    })
+            //     console.log(val)
             }
         }
-    };
+    }
 </script>
 <style scoped>
     .order {
@@ -204,7 +231,7 @@
         float: left;
         height: 85px;
         width: 120px;
-        padding-left: 80px;
+        padding-left: 10px;
     }
 
     .order .content ul .pro-img img {
@@ -213,7 +240,8 @@
     }
 
     .order .content ul .pro-statue{
-        float: right;
+        float: left;
+        padding-right: 40px;
         width: 70px;
     }
     .order .content ul .pro-name {
@@ -238,14 +266,14 @@
 
     .order .content ul .pro-num {
         float: left;
-        width: 190px;
+        width: 170px;
         text-align: center;
     }
 
     .order .content ul .pro-total {
         float: left;
         width: 130px;
-        padding-right: 81px;
+        padding-right: 60px;
         text-align: right;
     }
 

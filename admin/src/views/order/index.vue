@@ -43,71 +43,7 @@ export default {
         //   key: 'zip'
         // }
       ],
-      data: [
-        {
-          id: 1,
-          order: '2016-05-03',
-          name: '王小虎',
-          buyerName: '上海',
-          sellerName: '普陀区',
-          time: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },
-        {
-          id: 2,
-          order: '2016-05-02',
-          name: '王小虎',
-          buyerName: '上海',
-          sellerName: '普陀区',
-          time: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },
-        {
-          id: 3,
-          order: '2016-05-04',
-          name: '王小虎',
-          buyerName: '上海',
-          sellerName: '普陀区',
-          time: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },
-        {
-          id: 4,
-          order: '2016-05-01',
-          name: '王小虎',
-          buyerName: '上海',
-          sellerName: '普陀区',
-          time: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },
-        {
-          id: 5,
-          order: '2016-05-08',
-          name: '王小虎',
-          buyerName: '上海',
-          sellerName: '普陀区',
-          time: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },
-        {
-          id: 6,
-          order: '2016-05-06',
-          name: '王小虎',
-          buyerName: '上海',
-          sellerName: '普陀区',
-          time: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },
-        {
-          id: 7,
-          order: '2016-05-07',
-          name: '王小虎',
-          buyerName: '上海',
-          sellerName: '普陀区',
-          time: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }
-      ],
+      data: [],
       options: {
         // maxHeight: '250'
       },
@@ -126,7 +62,8 @@ export default {
   },
   methods: {
     handleRowRemove({ index, row }, done) {
-      var data = { id: row.id }
+      var data = { id: row.order }
+      console.log(row);
       cancelOrder(data).then(
         response => {
           if (response.code === 20000) {
@@ -147,7 +84,19 @@ export default {
     fetchlist() {
       getOrderList().then(res => {
         if (res.code === 20000) {
-          this.data = res.data
+            this.data = [];
+            for(let i=0;i<res.data.length;i++){
+                let order = res.data[i];
+                this.data.push({
+                    id: i,
+                    order: order.order_id,
+                    name: order.product_name,
+                    buyerName: order.buyerName,
+                    sellerName: order.sellerName,
+                    time: order.order_time,
+                    zip: 200333
+                })
+            }
         } else {
           this.$message({
             message: '获取order失败',

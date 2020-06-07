@@ -84,7 +84,10 @@
                         </li>
                         <li>
                             <span class="title">活动优惠：</span>
-                            <span class="value">-0元</span>
+                            <span class="value">-{{(getTotalPrice*(1-discount/10)).toFixed(0)}}元
+                            <span v-if="discount!==10">全场{{discount}}折</span>
+                            </span>
+
                         </li>
                         <li>
                             <span class="title">优惠券抵扣：</span>
@@ -97,7 +100,7 @@
                         <li class="total">
                             <span class="title">应付总额：</span>
                             <span class="value">
-                <span class="total-price">{{getTotalPrice}}</span>元
+                <span class="total-price">{{getTotalPrice-(getTotalPrice*(1-discount/10)).toFixed(0)}}</span>元
               </span>
                         </li>
                     </ul>
@@ -141,7 +144,8 @@
                         phone: "13888888888",
                         address: "吉林省 长春市 朝阳区 "
                     }
-                ]
+                ],
+                discount:0
             };
         },
         created() {
@@ -154,6 +158,23 @@
         computed: {
             // 结算的商品数量; 结算商品总计; 结算商品信息
             ...mapGetters(["getCheckNum", "getTotalPrice", "getCheckGoods"])
+        },
+        mounted(){
+            this.$axios
+                .post("/api/users/getDiscount",{})
+                .then(res => {
+                    if(res.data.code === 20000){
+                        console.log(this.discount);
+                        this.discount = res.data.data.discount;
+                        console.log(this.discount);
+                        console.log(res.data);
+                    }else{
+                        this.discount = 10
+                    }
+                })
+                .catch(err => {
+                    return Promise.reject(err);
+                });
         },
         methods: {
             ...mapActions(["deleteShoppingCart"]),
@@ -185,7 +206,7 @@
                     .catch(err => {
                         return Promise.reject(err);
                     });
-            }
+            },
         }
     };
 </script>
