@@ -54,6 +54,7 @@ export default {
       var data = { discount: this.form.discount }
       modifyDiscount(data).then(res => {
         if (res.code === 20000) {
+          this.fetchDiscount()
           this.$message({
             message: '修改成功',
             type: 'success'
