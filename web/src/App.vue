@@ -38,6 +38,9 @@
                         <li>
                             <router-link to="/myStore" v-if="isSeller()">我的店铺</router-link>
                         </li>
+                        <li>
+                            <router-link to="/uploadItem"  v-if="isSeller()">上传商品</router-link>
+                        </li>
                     </ul>
                 </div>
             </div>
