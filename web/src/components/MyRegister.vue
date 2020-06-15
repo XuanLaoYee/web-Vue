@@ -141,7 +141,8 @@
                         this.$axios
                             .post("/api/users/register", {
                                 userName: this.RegisterUser.name,
-                                password: this.RegisterUser.pass
+                                password: this.RegisterUser.pass,
+                                user_kind: this.user_kind
                             })
                             .then(res => {// “001”代表注册成功，其他的均为失败
                                 if (res.data.code === "001") {
