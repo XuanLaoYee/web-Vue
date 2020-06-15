@@ -1,5 +1,6 @@
 <template>
     <div class="uploaditem">
+<!--        <div>{{JSON.stringify(form.imageURLs)}}</div>-->
         <!--上传商品头部-->
         <div class="uploaditem-header">
             <div class="uploaditem-header-content">
@@ -29,38 +30,47 @@
                 <el-input type="textarea"  :autosize="{ minRows: 5, maxRows: 10}"  v-model="form.desc" style="width:700px;"></el-input>
             </el-form-item>
             <el-form-item label="定价">
-                <el-input v-model="form.price" style="width:300px;"></el-input>
+                <el-input v-model="form.price" style="width:300px;" type="number"></el-input>
             </el-form-item>
             <el-form-item label="售价">
-
-                <el-input v-model="form.selling" style="width:300px;"></el-input>
+                <el-input v-model="form.selling" style="width:300px;" type="number"></el-input>
             </el-form-item>
             <el-form-item label="数量">
-                <el-input v-model="form.num" style="width:300px;"></el-input>
+                <el-input-number v-model="form.num" style="width:300px;" :max=999></el-input-number>
             </el-form-item>
-            <el-form-item label="封面" >
+            <el-form-item label="物品图片">
                 <el-upload
-                        class="avatar-uploader"
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        :show-file-list="false"
-                        :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        action="https://httpbin.org/post"
+                        list-type="picture-card"
+                        :auto-upload="false"
+                        ref="onSubmit"
+                        :on-change="setImageURL">
+                    <i slot="default" class="el-icon-plus"></i>
+                    <div slot="file" slot-scope="{file}">
+                        <img
+                                class="el-upload-list__item-thumbnail"
+                                :src="file.url" alt=""
+                        >
+                        <span class="el-upload-list__item-actions">
+                            <span
+                                    class="el-upload-list__item-preview"
+                                    @click="handlePictureCardPreview(file)"
+                            >
+                            <i class="el-icon-zoom-in"></i>
+                            </span>
+                            <span
+                                    v-if="!disabled"
+                                    class="el-upload-list__item-delete"
+                                    @click="handleRemove(file)"
+                            >
+                              <i class="el-icon-delete"></i>
+                            </span>
+                        </span>
+                    </div>
                 </el-upload>
-                <!--action 上传的地址-->
-            </el-form-item>
-            <el-form-item label="详情图">
-            <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
-                    list-type="picture-card"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove">
-                <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-                <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
+                <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">立即上传</el-button>
@@ -78,55 +88,84 @@
 
                 form: {
                     name: '',//商品名
-                    category: '',
-                    title: '',
-                    desc: '',
-                    price:'',
-                    selling:'',
-                    categoryList: "",
-                    num:'',
-                    imageUrl: '',
-                    dialogImageUrl: '',
-                    dialogVisible: false
-                }
+                    category: '',//分类
+                    title: '',//标题
+                    desc: '',//介绍
+                    price:0,
+                    selling:0,//卖价
+                    num:0,
+                    imageURLs: [],//存object{id：标识，url：base64}
+                },
+                categoryList: [],
+                dialogImageUrl: '',
+                dialogVisible: false,
+                disabled: false,
+
             }
         },
         created() {
-            // 获取分类列表
             this.getCategory();
         },
         methods: {
             onSubmit() {
-                console.log('submit!');
+                //TODO
+                // this.$refs.onSubmit.submit();
+                // console.log(this.file);
+
+                this.$axios
+                    .post('api/user/upload',this.form)
+                    .then(res=>{
+                        if(res.data.code==='002'){
+                            this.$message.error(this.data.msg);
+                        }else{
+                            this.notifySucceed("上架成功");
+                            this.$router.push({path: "/myStore", query: {seller_id: this.$store.getters.getUser.user_id}})
+                        }
+                    })
             },
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = URL.createObjectURL(file.raw);
+            handleRemove(file){
+                console.log(file);
             },
+            handlePictureCardPreview(file){
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+            setImageURL(file){
+                console.log(file);
+                const reader = new FileReader();
+                let self = this;
+                reader.addEventListener("load", function () {
+                    // preview.src = reader.result;
+                    self.form.imageURLs.push({
+                        id:file.url,
+                        url:reader.result
+                    })
+                    console.log(reader.result);
+                }, false);
+
+                if (file.raw) {
+                    reader.readAsDataURL(file.raw);
+                }
+            },
+
+
             beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
+                const isJPGOrPNG = (file.type === 'image/jpeg' || file.type === 'image/png');
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
-                if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                if (!isJPGOrPNG) {
+                    this.$message.error('上传头像图片只能是 JPG或Png 格式!');
                 }
                 if (!isLt2M) {
                     this.$message.error('上传头像图片大小不能超过 2MB!');
                 }
-                return isJPG && isLt2M;
-            },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
+                return isJPGOrPNG && isLt2M;
             },
             getCategory() {
                 this.$axios
                     .post("/api/product/getCategory", {})
                     .then(res => {
                         const cate = res.data.category;
-
                         this.categoryList = cate;
                     })
                     .catch(err => {

@@ -36,7 +36,7 @@
                             </router-link>
                         </li>
                         <li>
-                            <router-link to="/myStore" v-if="isSeller()">我的店铺</router-link>
+                            <el-button type="text" v-if="isSeller()" @click="routerTo">我的店铺</el-button>
                         </li>
                         <li>
                             <router-link to="/uploadItem"  v-if="isSeller()">上传商品</router-link>
@@ -199,6 +199,9 @@
                     this.$router.push({path: "/goods", query: {search: this.search}});
                     this.search = "";
                 }
+            },
+            routerTo(){
+                this.$router.push({path: "/myStore", query: {seller_id: this.$store.getters.getUser.user_id}})
             }
         }
     };
