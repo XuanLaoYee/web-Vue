@@ -204,4 +204,9 @@
 </script>
 <style scoped>
   @import "../assets/css/index.css";
+  .main-box {
+    background-color: #f5f5f5;
+    /*background-color: #ff6700;*/
+    padding-bottom: 20px;
+  }
 </style>

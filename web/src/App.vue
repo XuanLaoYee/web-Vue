@@ -48,6 +48,7 @@
 
             <!-- 顶栏容器 -->
             <el-header>
+
                 <el-menu
                         :default-active="activeIndex"
                         class="el-menu-demo"
@@ -62,7 +63,7 @@
                     </div>
                     <el-menu-item index="/">首页</el-menu-item>
                     <el-menu-item index="/goods">全部商品</el-menu-item>
-                    <el-menu-item index="/about">about</el-menu-item>
+                    <el-menu-item index="/about">关于</el-menu-item>
                     <div class="so">
                         <el-input placeholder="请输入搜索内容" v-model="search">
                             <el-button slot="append" icon="el-icon-search" @click="searchClick"></el-button>
@@ -108,7 +109,7 @@
                             <span>|</span>
                             <router-link to="/goods">全部商品</router-link>
                             <span>|</span>
-                            <router-link to="/about">about</router-link>
+                            <router-link to="/about">关于</router-link>
                         </p>
                         <p class="coty">备案号：2020111111 &copy; 2020-2021</p>
                     </div>
