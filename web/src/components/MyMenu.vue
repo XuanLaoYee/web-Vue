@@ -44,12 +44,12 @@
     }
 
     #myMenu a:hover {
-        color: #ff6700;
-        border-bottom: 2px solid #ff6700;
+        color: #61AAEE;
+        border-bottom: 2px solid #61AAEE;
     }
 
     #myMenu .active a {
-        color: #ff6700;
-        border-bottom: 2px solid #ff6700;
+        color: #61AAEE;
+        border-bottom: 2px solid #61AAEE;
     }
 </style>
