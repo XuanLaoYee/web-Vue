@@ -206,7 +206,7 @@
   @import "../assets/css/index.css";
   .main-box {
     background-color: #f5f5f5;
-    /*background-color: #ff6700;*/
+    /*background-color: #61AAEE;*/
     padding-bottom: 20px;
   }
 </style>

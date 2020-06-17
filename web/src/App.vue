@@ -295,12 +295,12 @@
     }
 
     .topbar .nav .shopCart:hover a {
-        color: #ff6700;
+        color: #61AAEE;
     }
 
     .topbar .nav .shopCart-full {
         width: 120px;
-        background: #ff6700;
+        background: #61AAEE;
     }
 
     .topbar .nav .shopCart-full a {

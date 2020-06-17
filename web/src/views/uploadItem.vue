@@ -5,7 +5,7 @@
         <div class="uploaditem-header">
             <div class="uploaditem-header-content">
                 <p>
-                    <i class="el-icon-s-shop" style="font-size: 30px;color: #ff6700;"></i>
+                    <i class="el-icon-s-shop" style="font-size: 30px;color: #61AAEE;"></i>
                     上传商品
                 </p>
             </div>
@@ -183,7 +183,7 @@
     }
     .uploaditem .uploaditem-header {
         height: 64px;
-        border-bottom: 2px solid #ff6700;
+        border-bottom: 2px solid #61AAEE;
         background-color: #fff;
         margin-bottom: 20px;
     }

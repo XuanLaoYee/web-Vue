@@ -217,7 +217,7 @@
     }
     .confirmOrder .confirmOrder-header {
         background-color: #fff;
-        border-bottom: 2px solid #ff6700;
+        border-bottom: 2px solid #61AAEE;
         margin-bottom: 20px;
     }
 
@@ -237,7 +237,7 @@
 
     .confirmOrder .confirmOrder-header .header-content p i {
         font-size: 45px;
-        color: #ff6700;
+        color: #61AAEE;
         line-height: 80px;
     }
     .confirmOrder .content {
@@ -271,7 +271,7 @@
     }
 
     .confirmOrder .content .address-body .in-section {
-        border: 1px solid #ff6700;
+        border: 1px solid #61AAEE;
     }
 
     .confirmOrder .content .address-body li h2 {
@@ -359,7 +359,7 @@
         float: left;
         width: 190px;
         text-align: center;
-        color: #ff6700;
+        color: #61AAEE;
         line-height: 30px;
     }
 
@@ -382,7 +382,7 @@
         float: left;
         line-height: 38px;
         font-size: 14px;
-        color: #ff6700;
+        color: #61AAEE;
     }
 
     .confirmOrder .content .section-invoice {
@@ -405,7 +405,7 @@
         line-height: 38px;
         font-size: 14px;
         margin-right: 20px;
-        color: #ff6700;
+        color: #61AAEE;
     }
 
     .confirmOrder .content .section-count {
@@ -434,7 +434,7 @@
         height: 30px;
         display: block;
         line-height: 30px;
-        color: #ff6700;
+        color: #61AAEE;
     }
 
     .confirmOrder .content .section-count .money-box .total .title {
@@ -476,8 +476,8 @@
     }
 
     .confirmOrder .content .section-bar .btn .btn-primary {
-        background: #ff6700;
-        border-color: #ff6700;
+        background: #61AAEE;
+        border-color: #61AAEE;
         color: #fff;
     }
 </style>

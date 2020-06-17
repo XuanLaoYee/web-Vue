@@ -4,7 +4,7 @@
     <div class="cart-header">
       <div class="cart-header-content">
         <p>
-          <i class="el-icon-shopping-cart-full" style="color:#ff6700; font-weight: 600;"></i>
+          <i class="el-icon-shopping-cart-full" style="color:#61AAEE; font-weight: 600;"></i>
           我的购物车
         </p>
         <span>温馨提示：产品是否购买成功，以最终下单为准，请尽快结算</span>
@@ -207,7 +207,7 @@ export default {
 }
 .shoppingCart .cart-header {
   height: 64px;
-  border-bottom: 2px solid #ff6700;
+  border-bottom: 2px solid #61AAEE;
   background-color: #fff;
   margin-bottom: 20px;
 }
@@ -279,7 +279,7 @@ export default {
   color: #424242;
 }
 .shoppingCart .content ul .pro-name a:hover {
-  color: #ff6700;
+  color: #61AAEE;
 }
 .shoppingCart .content ul .pro-price {
   float: left;
@@ -299,7 +299,7 @@ export default {
   text-align: right;
 }
 .shoppingCart .content ul .pro-total-in {
-  color: #ff6700;
+  color: #61AAEE;
 }
 .shoppingCart .content ul .pro-action {
   float: left;
@@ -307,7 +307,7 @@ export default {
   text-align: center;
 }
 .shoppingCart .content ul .pro-action i:hover {
-  color: #ff6700;
+  color: #61AAEE;
 }
 .shoppingCart .cart-bar {
   width: 1225px;
@@ -324,7 +324,7 @@ export default {
   color: #757575;
 }
 .shoppingCart .cart-bar .cart-bar-left a:hover {
-  color: #ff6700;
+  color: #61AAEE;
 }
 .shoppingCart .cart-bar .cart-bar-left .sep {
   color: #eee;
@@ -334,17 +334,17 @@ export default {
   color: #757575;
 }
 .shoppingCart .cart-bar .cart-bar-left .cart-total-num {
-  color: #ff6700;
+  color: #61AAEE;
 }
 .shoppingCart .cart-bar .cart-bar-right {
   float: right;
 }
 .shoppingCart .cart-bar .cart-bar-right .total-price-title {
-  color: #ff6700;
+  color: #61AAEE;
   font-size: 14px;
 }
 .shoppingCart .cart-bar .cart-bar-right .total-price {
-  color: #ff6700;
+  color: #61AAEE;
   font-size: 30px;
 }
 .shoppingCart .cart-bar .cart-bar-right .btn-primary {
@@ -353,7 +353,7 @@ export default {
   text-align: center;
   font-size: 18px;
   margin-left: 50px;
-  background: #ff6700;
+  background: #61AAEE;
   color: #fff;
 }
 .shoppingCart .cart-bar .cart-bar-right .btn-primary-disabled {

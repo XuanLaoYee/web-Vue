@@ -140,7 +140,7 @@
     .myList ul li p {
         margin: 10px 10px 10px;
         text-align: center;
-        color: #ff6700;
+        color: #61AAEE;
     }
 
     .myList ul li p .del {
@@ -160,7 +160,7 @@
     }
 
     .myList #more a:hover {
-        color: #ff6700;
+        color: #61AAEE;
     }
 
     .myList ul li .delete {
@@ -175,6 +175,6 @@
     }
 
     .myList ul li .delete:hover {
-        color: #ff6700;
+        color: #61AAEE;
     }
 </style>
