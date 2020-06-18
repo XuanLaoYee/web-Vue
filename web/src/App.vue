@@ -9,6 +9,7 @@
                             <el-button type="text" @click="login">登陆</el-button>
                             <span class="sep">|</span>
                             <el-button type="text" @click="register = true">注册</el-button>
+                            <el-button type="text" @click="toAdmin"> 管理员登陆 </el-button>
                         </li>
                         <li v-else>
                             欢迎
@@ -203,6 +204,9 @@
             },
             routerTo(){
                 this.$router.push({path: "/myStore", query: {seller_id: this.$store.getters.getUser.user_id}})
+            },
+            toAdmin(){
+                window.location.href = 'http://127.0.0.1:9528';
             }
         }
     };
